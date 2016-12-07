@@ -1,7 +1,7 @@
 (ns clojure-lunch-and-learn.core
   (:gen-class))
 
-;;; # DATA
+;;; DATA
 
 ; Vector
 ["a" "b" "c"]
@@ -9,18 +9,76 @@
 ; List
 '(1 2 3)
 
+; Keyword (similar
+:special-snowflake
+
 ; Map
-{:name "Greenhouse" :startup? true}
+{:name "Greenhouse" :city "New York"}
+
+; Set
+#{"fred" "ethel"}
 
 ; Composable
-[{:name "Greenhouse" :startup? true}
- {:name "Google" :startup? false}]
+[{:name "Greenhouse" :city "New York"}
+ {:name "Dropbox" :city "San Francisco"}]
+
+
+
+
+
+
+
+
+
+
+;;; EXAMPLES
+
+; HTTP Headers
+{:user-agent "Mozilla/5.0 (Macintosh)",
+ :cache-control "max-age=0",
+ :host "localhost:3000",
+ :accept-encoding "gzip, deflate, sdch, br",
+ :connection "keep-alive",
+ :accept-language "en-US,en;q=0.8",
+ :accept "text/html"}
+
+
+
+
+
+
+
+; HoneySQL
+{:select [:a :b :c]
+ :from [:foo]
+ :where [:= :f.a "baz"]}
+
+
+
+
+; Hiccup HTML
+; <div id="hello" class="content"><p>Hello world!</p></div>
+[:div {:id "hello", :class "content"} [:p "Hello world!"]]
+
+
+
+
+
+
+; Onyx DAG
+[[:in :split-by-spaces]
+ [:split-by-spaces :mixed-case]
+ [:mixed-case :loud]
+ [:mixed-case :question]
+ [:loud :loud-output]
+ [:question :question-output]]
+
 
 ;; # FUNCTIONS
 
 ; Invoking functions
 (+ 1 1)
-(str "aa" "bb")
+(str "aa" "bb" "cc" "dd")
 
 (+ (* 2 2) (* 3 2))
 
@@ -28,7 +86,7 @@
   (str "Hi " name "!"))
 
 ;; # IMMUTABLE DATA STRUCTURES
-(def company {:name "Greenhouse" :startup? true})
+(def company {:name "Greenhouse" :city "New York"})
 
 (assoc company :city "New York")
 
