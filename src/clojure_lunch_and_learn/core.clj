@@ -1,4 +1,5 @@
 (ns clojure-lunch-and-learn.core
+  (:require [rhizome.viz :as viz])
   (:gen-class))
 
 ;;; DATA
@@ -58,7 +59,8 @@
 
 ; HTML (Hiccup)
 ; <div id="hello" class="content"><p>Hello world!</p></div>
-[:div {:id "hello", :class "content"} [:p "Hello world!"]]
+[:div {:id "hello", :class "content"}
+ [:p "Hello world!"]]
 
 
 
@@ -66,14 +68,22 @@
 
 
 ; Onyx DAG
-[[:in :split-by-spaces]
- [:split-by-spaces :mixed-case]
- [:mixed-case :loud]
- [:mixed-case :question]
- [:loud :loud-output]
- [:question :question-output]]
+(def onyx-dag
+ [[:in :split-by-spaces]
+  [:split-by-spaces :mixed-case]
+  [:mixed-case :loud]
+  [:mixed-case :question]
+  [:loud :loud-output]
+  [:question :question-output]])
 
 
+;; Graphviz version of that DAG
+(def graph {:in [:split-by-spaces]
+            :split-by-spaces [:mixed-case]
+            :mixed-case [:loud :question]
+            :loud [:loud-output]
+            :question [:question-output]})
+(viz/view-graph (keys graph) graph :node->descriptor (fn [n] {:label n}))
 ;; # FUNCTIONS
 
 ; Invoking functions
