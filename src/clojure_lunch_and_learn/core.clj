@@ -77,7 +77,7 @@
 
 (comment
 
-  (viz/view-graph (keys graph) graph :node->descriptor (fn [n] {:label n})))
+  (viz/view-graph (keys graph) graph :node->descriptor (fn [n] {:label (name n)})))
 
 
 ;; FUNCTIONS
@@ -130,7 +130,7 @@
 ;; that deals with changing the world and
 ;; it is isolated
 
-;; # MACROS
+;; MACROS
 (defmacro unless
   [pred then else]
   `(if (not ~pred) ~then ~else))
@@ -142,10 +142,27 @@
 ;
 ;; Core features of the language are
 ;; implemented this way
-;;  - core.async (go-like async processing)
+;;  - core.async (golang-like async processing)
 ;;  - core.match (pattern-matching)
-;;  - clojure.spec
+;;  - clojure.spec (data specification)
 
 
+;; CLOJURE.SPEC
 
+(s/def ::sourcing_strategy_key
+  #{ "CANDIDATE_SEARCH"
+     "COMPANY_MARKETING"
+     "OTHER"
+     "JOB_BOARDS"
+     "ATTEND_EVENTS"
+     "REFERRALS"
+     "SOCIAL_MEDIA"
+     "AGENCIES"})
 
+(s/def ::strategies (s/coll-of ::sourcing_strategy_key))
+
+(comment
+  (s/valid? ::sourcing_strategy_key "blahblah")
+  (s/explain ::sourcing_strategy_key "blahblah")
+  (s/explain ::strategies ["OTHER" "AGENCIES" "blahblah"])
+  (s/conform ::strategies ["CANDIDATE_SEARCH" "OTHER"]))
