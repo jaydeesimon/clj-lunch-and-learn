@@ -1,5 +1,6 @@
 (ns clojure-lunch-and-learn.core
-  (:require [rhizome.viz :as viz])
+  (:require [rhizome.viz :as viz]
+            [clojure.spec :as s])
   (:gen-class))
 
 ;;; DATA
@@ -19,7 +20,7 @@
 ; Set
 #{"fred" "ethel"}
 
-; Composable
+; Composable, vector of maps
 [{:name "Greenhouse" :city "New York"}
  {:name "Dropbox" :city "San Francisco"}]
 
@@ -59,7 +60,7 @@
 
 ; HTML (Hiccup)
 ; <div id="hello" class="content"><p>Hello world!</p></div>
-[:div {:id "hello", :class "content"}
+[:div {:id "hello" :class "content"}
  [:p "Hello world!"]]
 
 
@@ -67,24 +68,19 @@
 
 
 
-; Onyx DAG
-(def onyx-dag
- [[:in :split-by-spaces]
-  [:split-by-spaces :mixed-case]
-  [:mixed-case :loud]
-  [:mixed-case :question]
-  [:loud :loud-output]
-  [:question :question-output]])
-
-
-;; Graphviz version of that DAG
+; Onyx Directed Acyclic Graph (DAG)
 (def graph {:in [:split-by-spaces]
             :split-by-spaces [:mixed-case]
             :mixed-case [:loud :question]
             :loud [:loud-output]
             :question [:question-output]})
-(viz/view-graph (keys graph) graph :node->descriptor (fn [n] {:label n}))
-;; # FUNCTIONS
+
+(comment
+
+  (viz/view-graph (keys graph) graph :node->descriptor (fn [n] {:label n})))
+
+
+;; FUNCTIONS
 
 ; Invoking functions
 (+ 1 1)
@@ -95,8 +91,11 @@
 (defn welcome [name]
   (str "Hi " name "!"))
 
+(comment
+  (welcome "everyone!"))
+
 ;; # IMMUTABLE DATA STRUCTURES
-(def company {:name "Greenhouse" :city "New York"})
+(def company {:name "Greenhouse"})
 
 (assoc company :city "New York")
 
@@ -104,24 +103,19 @@
 
 ;; How does this work?
 ;;  - Structural sharing
+;;  - implemented efficiently
 
 ;; Why would you want to do this?
 ;;  - knowing that your data structure
 ;;    is not going to change means
 ;;    it is shareable
+;;  - eliminates an entire class of bugs
 
-;; Other example of immutability
-;;  - Git is a good example; just
-;;    because you changed some
-;;    code in your codebase, you doesn't
-;;    mean you overwrite
+;; Other examples of immutability in the wild
+;;  - Git
+;;  - Logging
 
-;; Talk about examples of *mutability*
-;; in Ruby (and what attempts are made
-;; to defend against it like freezing)
-
-
-;; # SO HOW DO YOU MANAGE CHANGE?
+;; SO HOW DO YOU MANAGE CHANGE?
 (def greenhouse-initial-state
   {:employees 200})
 
@@ -130,14 +124,11 @@
 (comment
   (swap! greenhouse update :employees inc))
 
-;; SHOW HOW REFS WORK?
-
-;; TALK ABOUT HOW CLOJURE PROGRAMS TEND TO LOOK
-;;  - 90% your code ends up being pure
-;;    functions that don't have side-effects.
-;;    And then there's a small part of your code
-;;    that deals with changing the world and
-;;    it's isolated
+;; ~90% your code ends up being pure
+;; functions that don't have side-effects.
+;; And then there's a small part of your code
+;; that deals with changing the world and
+;; it is isolated
 
 ;; # MACROS
 (defmacro unless
@@ -148,6 +139,13 @@
 ;; Because of this property, new
 ;; language features can be added
 ;; horizontally through libraries.
+;
 ;; Core features of the language are
-;; implemented this way: core.async
-;; and clojure.spec.
+;; implemented this way
+;;  - core.async (go-like async processing)
+;;  - core.match (pattern-matching)
+;;  - clojure.spec
+
+
+
+
