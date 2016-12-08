@@ -10,10 +10,10 @@
 ; List
 '(1 2 3)
 
-; Keyword (similar
+; Keyword (similar to symbols in Ruby)
 :special-snowflake
 
-; Map
+; Map (Hash in Ruby)
 {:name "Greenhouse" :city "New York"}
 
 ; Set
@@ -49,7 +49,7 @@
 
 
 
-; HoneySQL
+; SQL (if that's your thing)
 {:select [:a :b :c]
  :from [:foo]
  :where [:= :f.a "baz"]}
@@ -57,7 +57,7 @@
 
 
 
-; Hiccup HTML
+; HTML (Hiccup)
 ; <div id="hello" class="content"><p>Hello world!</p></div>
 [:div {:id "hello", :class "content"}
  [:p "Hello world!"]]
