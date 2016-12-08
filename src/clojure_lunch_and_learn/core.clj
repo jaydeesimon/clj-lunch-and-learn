@@ -20,7 +20,7 @@
 ; Set
 #{"fred" "ethel"}
 
-; Composable, vector of maps
+; Composable (vector of maps)
 [{:name "Greenhouse" :city "New York"}
  {:name "Dropbox" :city "San Francisco"}]
 
@@ -76,8 +76,16 @@
             :question [:question-output]})
 
 (comment
-
   (viz/view-graph (keys graph) graph :node->descriptor (fn [n] {:label (name n)})))
+
+
+
+
+
+
+
+
+
 
 
 ;; FUNCTIONS
@@ -94,7 +102,25 @@
 (comment
   (welcome "everyone!"))
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ;; # IMMUTABLE DATA STRUCTURES
+
 (def company {:name "Greenhouse"})
 
 (assoc company :city "New York")
@@ -115,6 +141,16 @@
 ;;  - Git
 ;;  - Logging
 
+
+
+
+
+
+
+
+
+
+
 ;; SO HOW DO YOU MANAGE CHANGE?
 (def greenhouse-initial-state
   {:employees 200})
@@ -130,10 +166,29 @@
 ;; that deals with changing the world and
 ;; it is isolated
 
+
+
+
+
+
+
+
+
+
+
+
+
 ;; MACROS
 (defmacro unless
   [pred then else]
   `(if (not ~pred) ~then ~else))
+
+;; Macros are expanded at compile time
+
+(comment
+  (unless false "Return me" "Not me")
+
+  (macroexpand '(unless false "Return me" "Not me")))
 
 ;; One of the benefits of LISP.
 ;; Because of this property, new
@@ -147,22 +202,31 @@
 ;;  - clojure.spec (data specification)
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+;; BONUS!
+;;
 ;; CLOJURE.SPEC
 
 (s/def ::sourcing_strategy_key
   #{ "CANDIDATE_SEARCH"
      "COMPANY_MARKETING"
-     "OTHER"
-     "JOB_BOARDS"
-     "ATTEND_EVENTS"
-     "REFERRALS"
-     "SOCIAL_MEDIA"
      "AGENCIES"})
 
 (s/def ::strategies (s/coll-of ::sourcing_strategy_key))
 
 (comment
   (s/valid? ::sourcing_strategy_key "blahblah")
-  (s/explain ::sourcing_strategy_key "blahblah")
   (s/explain ::strategies ["OTHER" "AGENCIES" "blahblah"])
-  (s/conform ::strategies ["CANDIDATE_SEARCH" "OTHER"]))
+  (s/explain-data ::sourcing_strategy_key "blahblah")
+  (s/conform ::strategies ["CANDIDATE_SEARCH" "AGENCIES"]))
